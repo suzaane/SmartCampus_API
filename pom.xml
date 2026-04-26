@@ -5,20 +5,13 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--
-        PACKAGING = jar
-        We are using an EMBEDDED Grizzly HTTP server (started from Main.java),
-        so we produce a self-contained JAR — not a WAR.
-        This means @ApplicationPath is NOT used by the runtime (Grizzly does
-        not read servlet annotations).  The /api/v1 prefix is set explicitly
-        in Main.java via GrizzlyHttpServerFactory.
-    -->
     <groupId>com.smartcampus</groupId>
     <artifactId>smartcampus-api</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
+        <!-- Stick to Java 11 for broader compatibility -->
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,7 +19,7 @@
     </properties>
 
     <dependencies>
-        <!-- JAX-RS 2.1 specification (interfaces only) -->
+        <!-- JAX-RS specification interfaces -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
@@ -34,9 +27,9 @@
         </dependency>
 
         <!--
-            Jersey + Grizzly embedded HTTP server.
-            jersey-container-grizzly2-http bundles everything needed to start
-            a standalone HTTP server in a single main() call.
+            Jersey + embedded Grizzly HTTP server.
+            This gives us everything we need to start a REST API
+            from a plain main() method (no external server).
         -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -44,24 +37,21 @@
             <version>${jersey.version}</version>
         </dependency>
 
-        <!-- Dependency injection framework required by Jersey 2.26+ -->
+        <!-- Dependency injection for Jersey (HK2) -->
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
             <version>${jersey.version}</version>
         </dependency>
 
-        <!--
-            Automatic POJO <-> JSON conversion via Jackson.
-            Registers a MessageBodyReader/Writer for application/json.
-        -->
+        <!-- Automatic JSON ↔ Java conversion (Jackson) -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>${jersey.version}</version>
         </dependency>
 
-        <!-- Jackson core (pulled transitively, but pinned for clarity) -->
+        <!-- Jackson core library (pinned version for stability) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -82,9 +72,9 @@
             </plugin>
 
             <!--
-                exec:java launches Main.java directly from Maven without
-                needing to build a fat JAR first.
-                Run with:  mvn clean compile exec:java
+                Run the application directly with:
+                mvn clean compile exec:java
+                Useful if you don't want to build a fat JAR.
             -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
