@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 public class Main {
 
     // The base URI only sets the server location. The /api/v1 prefix comes from
-    // ApplicationConfig's @ApplicationPath annotation.
-    private static final URI BASE_URI = URI.create("http://localhost:8080/");
+    // Applicatio nConfig's @ApplicationPath annotation.
+    private static final URI BASE_URI = URI.create("http://localhost:8080/api/v1/");
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
