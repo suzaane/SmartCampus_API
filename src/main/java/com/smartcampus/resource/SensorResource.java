@@ -51,8 +51,9 @@ public class SensorResource {
     }
 
     // ── POST /sensors ─────────────────────────────────────────────────
-
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createSensor(Sensor sensor, @Context UriInfo uriInfo) {
         if (sensor == null || sensor.getId() == null || sensor.getId().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
